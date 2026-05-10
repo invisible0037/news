@@ -24,7 +24,7 @@ const websites = [
     url: 'https://t.me/s/pouriazeraati', 
     filename: 'screenshot4.jpg',
     width: 500,
-    height: 6200,
+    height: 4200,
 	quality: 100
   },
   { 
