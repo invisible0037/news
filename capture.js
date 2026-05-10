@@ -8,6 +8,11 @@ const websites = [
     filename: 'screenshot1.png',
     fullPage: true
   },
+    { 
+    url: 'https://bbc.com/persian', 
+    filename: 'screenshot2.png',
+    fullPage: true
+  },
   { 
     url: 'https://t.me/persian_trend_oficial', 
     filename: 'screenshot3.png',
@@ -15,10 +20,9 @@ const websites = [
     height: 3200
   },
 
-  // سایت‌های خود را اینجا اضافه کنید
 ];
 
-const screenshotsDir = './screenshots';
+const screenshotsDir = './';
 
 async function ensureDir() {
   try {
@@ -52,7 +56,7 @@ async function capture() {
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
       await page.screenshot({ 
         path: screenshotPath, 
-        fullPage: false  // اگر true کنید کل صفحه را می‌گیرد
+        fullPage: false
       });
       console.log(`✅ Saved: ${screenshotPath} (${width}x${height})`);
     } catch (error) {
