@@ -14,19 +14,19 @@ const websites = [
     fullPage: true
   },
   { 
-    url: 'https://t.me/persian_trend_official', 
+    url: 'https://t.me/s/persian_trend_official', 
     filename: 'screenshot3.jpg',
     width: 500,
     height: 3200
   },
   { 
-    url: 'https://t.me/pouriazeraati', 
+    url: 'https://t.me/s/pouriazeraati', 
     filename: 'screenshot4.jpg',
     width: 500,
     height: 3200
   },
   { 
-    url: 'https://t.me/rodast_omiddana', 
+    url: 'https://t.me/s/rodast_omiddana', 
     filename: 'screenshot5.jpg',
     width: 500,
     height: 3200
