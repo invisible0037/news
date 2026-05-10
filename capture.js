@@ -19,7 +19,6 @@ const websites = [
     width: 500,
     height: 3200
   },
-
 ];
 
 const screenshotsDir = '.';
@@ -28,7 +27,7 @@ async function ensureDir() {
   try {
     await fs.access(screenshotsDir);
   } catch {
-    await fs.mkdir(screenshotsDir, { recursive: true });
+    console.log('Root directory exists');
   }
 }
 
@@ -40,25 +39,29 @@ async function capture() {
   });
 
   for (let i = 0; i < websites.length; i++) {
-    const { url, filename, width = 1280, height = 720 } = websites[i];
+    const { url, filename, width = 1280, height = 720, fullPage = false } = websites[i];
     const screenshotPath = path.join(screenshotsDir, filename);
     
     const page = await browser.newPage();
     
-    // تنظیم سایز viewport برای هر سایت
     await page.setViewport({ 
       width: width, 
       height: height 
     });
     
     try {
-      console.log(`Capturing ${url} -> ${filename} (${width}x${height})`);
+      console.log(`Capturing ${url} -> ${filename}`);
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+      
+      // گرفتن اسکرین‌شات به صورت JPG با کیفیت 80
       await page.screenshot({ 
         path: screenshotPath, 
-        fullPage: false
+        fullPage: fullPage,
+        type: 'jpeg',        // تعیین نوع فایل
+        quality: 80          // کیفیت JPG (1-100)
       });
-      console.log(`✅ Saved: ${screenshotPath} (${width}x${height})`);
+      
+      console.log(`✅ Saved: ${screenshotPath}`);
     } catch (error) {
       console.error(`❌ Failed to capture ${url}:`, error.message);
     } finally {
