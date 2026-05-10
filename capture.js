@@ -9,13 +9,29 @@ const websites = [
     fullPage: true
   },
   { 
-    url: 'https://t.me/persian_trend_oficial', 
+    url: 'https://bbc.com/persian/', 
+    filename: 'screenshot2.jpg',
+    fullPage: true
+  },
+  { 
+    url: 'https://t.me/persian_trend_official', 
     filename: 'screenshot3.jpg',
     width: 500,
     height: 3200
   },
+  { 
+    url: 'https://t.me/pouriazeraati', 
+    filename: 'screenshot4.jpg',
+    width: 500,
+    height: 3200
+  },
+  { 
+    url: 'https://t.me/rodast_omiddana', 
+    filename: 'screenshot5.jpg',
+    width: 500,
+    height: 3200
+  },
 
-  // سایت‌های خود را اینجا اضافه کنید
 ];
 
 const screenshotsDir = '.';
@@ -36,7 +52,7 @@ async function capture() {
   });
 
   for (let i = 0; i < websites.length; i++) {
-    const { url, filename, width = 1280, height = 720 } = websites[i];
+    const { url, filename, width = 1280, height = 720, fullPage = false, quality = 90 } = websites[i];
     const screenshotPath = path.join(screenshotsDir, filename);
     
     const page = await browser.newPage();
@@ -54,7 +70,7 @@ async function capture() {
 		  path: screenshotPath, 
 		  fullPage: false,
 		  type: 'jpeg',
-		  quality: 80
+		  quality: 90
 		});
       console.log(`✅ Saved: ${screenshotPath} (${width}x${height})`);
     } catch (error) {
