@@ -52,7 +52,7 @@ async function capture() {
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 		await page.screenshot({ 
 		  path: screenshotPath, 
-		  fullPage: fullPage,
+		  fullPage: false,
 		  type: 'jpeg',
 		  quality: 80
 		});
