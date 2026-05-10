@@ -1,9 +1,9 @@
 name: Scheduled Screenshots
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '*/15 * * * *'
-  workflow_dispatch:
 
 jobs:
   capture-screenshots:
