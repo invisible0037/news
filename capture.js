@@ -17,19 +17,22 @@ const websites = [
     url: 'https://t.me/s/persian_trend_official', 
     filename: 'screenshot3.jpg',
     width: 500,
-    height: 3200
+    height: 6200,
+	quality: 100
   },
   { 
     url: 'https://t.me/s/pouriazeraati', 
     filename: 'screenshot4.jpg',
     width: 500,
-    height: 3200
+    height: 6200,
+	quality: 100
   },
   { 
     url: 'https://t.me/s/rodast_omiddana', 
     filename: 'screenshot5.jpg',
     width: 500,
-    height: 3200
+    height: 6200,
+	quality: 100
   },
 
 ];
