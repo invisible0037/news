@@ -1,71 +1,38 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs').promises;
-const path = require('path');
+name: Scheduled Screenshots
 
-const websites = [
-  { 
-    url: 'https://iranintl.com', 
-    filename: 'screenshot1.jpg',
-    fullPage: true
-  },
-  { 
-    url: 'https://t.me/persian_trend_oficial', 
-    filename: 'screenshot3.jpg',
-    width: 500,
-    height: 3200
-  },
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
 
-  // سایت‌های خود را اینجا اضافه کنید
-];
+jobs:
+  capture-screenshots:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
-const screenshotsDir = '.';
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-async function ensureDir() {
-  try {
-    await fs.access(screenshotsDir);
-  } catch {
-    await fs.mkdir(screenshotsDir, { recursive: true });
-  }
-}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-async function capture() {
-  await ensureDir();
-  
-  const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+      - name: Install Puppeteer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm1 libnss3 libxss1 libxtst6 libgtk-3-0
+          npm install puppeteer
 
-  for (let i = 0; i < websites.length; i++) {
-    const { url, filename, width = 1280, height = 720 } = websites[i];
-    const screenshotPath = path.join(screenshotsDir, filename);
-    
-    const page = await browser.newPage();
-    
-    // تنظیم سایز viewport برای هر سایت
-    await page.setViewport({ 
-      width: width, 
-      height: height 
-    });
-    
-    try {
-      console.log(`Capturing ${url} -> ${filename} (${width}x${height})`);
-      await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-		await page.screenshot({ 
-		  path: screenshotPath, 
-		  fullPage: fullPage,
-		  type: 'jpeg',
-		  quality: 80
-		});
-      console.log(`✅ Saved: ${screenshotPath} (${width}x${height})`);
-    } catch (error) {
-      console.error(`❌ Failed to capture ${url}:`, error.message);
-    } finally {
-      await page.close();
-    }
-  }
+      - name: Capture screenshots
+        run: node capture.js
 
-  await browser.close();
-  console.log('All screenshots captured!');
-}
-
-capture().catch(console.error);
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.jpg
+          git commit -m "Update screenshots $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push
