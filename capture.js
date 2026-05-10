@@ -22,7 +22,7 @@ const websites = [
 
 ];
 
-const screenshotsDir = './screenshots';
+const screenshotsDir = '.';
 
 async function ensureDir() {
   try {
