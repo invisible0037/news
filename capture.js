@@ -5,20 +5,17 @@ const path = require('path');
 const websites = [
   { 
     url: 'https://iranintl.com', 
-    filename: 'screenshot1.png',
-    fullPage: true
-  },
-    { 
-    url: 'https://bbc.com/persian', 
-    filename: 'screenshot2.png',
+    filename: 'screenshot1.jpg',
     fullPage: true
   },
   { 
     url: 'https://t.me/persian_trend_oficial', 
-    filename: 'screenshot3.png',
+    filename: 'screenshot3.jpg',
     width: 500,
     height: 3200
   },
+
+  // سایت‌های خود را اینجا اضافه کنید
 ];
 
 const screenshotsDir = '.';
@@ -27,7 +24,7 @@ async function ensureDir() {
   try {
     await fs.access(screenshotsDir);
   } catch {
-    console.log('Root directory exists');
+    await fs.mkdir(screenshotsDir, { recursive: true });
   }
 }
 
@@ -39,29 +36,27 @@ async function capture() {
   });
 
   for (let i = 0; i < websites.length; i++) {
-    const { url, filename, width = 1280, height = 720, fullPage = false } = websites[i];
+    const { url, filename, width = 1280, height = 720 } = websites[i];
     const screenshotPath = path.join(screenshotsDir, filename);
     
     const page = await browser.newPage();
     
+    // تنظیم سایز viewport برای هر سایت
     await page.setViewport({ 
       width: width, 
       height: height 
     });
     
     try {
-      console.log(`Capturing ${url} -> ${filename}`);
+      console.log(`Capturing ${url} -> ${filename} (${width}x${height})`);
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-      
-      // گرفتن اسکرین‌شات به صورت JPG با کیفیت 80
-      await page.screenshot({ 
-        path: screenshotPath, 
-        fullPage: fullPage,
-        type: 'jpeg',        // تعیین نوع فایل
-        quality: 80          // کیفیت JPG (1-100)
-      });
-      
-      console.log(`✅ Saved: ${screenshotPath}`);
+		await page.screenshot({ 
+		  path: screenshotPath, 
+		  fullPage: fullPage,
+		  type: 'jpeg',
+		  quality: 80
+		});
+      console.log(`✅ Saved: ${screenshotPath} (${width}x${height})`);
     } catch (error) {
       console.error(`❌ Failed to capture ${url}:`, error.message);
     } finally {
